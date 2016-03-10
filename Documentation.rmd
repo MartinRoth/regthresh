@@ -1,0 +1,66 @@
+---
+title: "Documentation"
+author: "Martin Roth"
+date: "March 10, 2016"
+output: html_document
+---
+
+
+```{r}
+library(regthresh)
+```
+
+```{r GeneralSimulationSettigns}
+sites <- 16
+years <- 50
+blockLength <- 92
+days  <- years * blockLength
+probs <- seq(.9, .995, by = 0.001)
+retPeriods <- c(5, 50, 100)
+```
+
+```{r CreateXpar}
+xpar <- list()
+xpar$S <- sites
+xpar$T <- days
+xpar$fpar <- function(p, xpar) {
+  loc   <- xpar$loc
+  scale <- p[1] * loc
+  shape <- matrix(p[2], xpar$T, xpar$S)
+  list(loc = loc, scale = scale, shape = shape)
+}
+xpar$nOfP <- 2
+xpar$start <- c(0.5, 0)
+```
+
+```{r SetMarginalParameters}
+tau     <- 0.95
+epsilon <- 0.25 
+gamma   <- 0.5
+xi      <- 0.15
+kappasV <- rbeta(xpar$S, 2, 5) + 0.5
+kappasP <- rep(calculateCorrespondingWeibullShape(0.15, tau), xpar$S)
+betas   <- runif(16, 2, 4) #c(  2,   4,   4,   3, 2.75, 3.25, 3.75, 3.5, 3.375,    3, 3.75,   3, 4, 3.5, 2.5)
+
+
+mParamsV <- setMarginalParameters(tau = tau, epsilon = epsilon, betas = betas
+    ,kappas = kappasV, gamma = gamma, xi = xi) 
+mParamsP <- setMarginalParameters(tau = tau, epsilon = epsilon, betas = betas
+    ,kappas = kappasP, gamma = gamma, xi = xi)
+```
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r}
+summary(cars)
+```
+
+You can also embed plots, for example:
+
+```{r, echo=FALSE}
+plot(cars)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

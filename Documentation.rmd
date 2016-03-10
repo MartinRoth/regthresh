@@ -8,6 +8,9 @@ output: html_document
 
 ```{r}
 library(regthresh)
+library(copula)
+library(doParallel)
+registerDoParallel()
 ```
 
 ```{r GeneralSimulationSettigns}
@@ -53,6 +56,22 @@ x <- seq(0, 50, by = 0.1)
 plot(x, pDW(x, mParamsP[[1]]), type = "l")
 for(i in 2 : 5) lines(x, pDW(x, mParamsV[[i]]), lty = i)
 abline(h = 0.95, col = 2, lty = 3)
+
+x <- seq(12, 16, by = 0.1)
+plot(x, dDW(x, mParamsP[[1]]), type = "l", ylim = c(0, 0.025))
+lines(x, dDW(x, mParamsV[[1]]), col = 2)
+for(i in 2 : 5) lines(x, dDW(x, mParamsV[[i]]), lty = i)
+
+x <- seq(9, 20, by = 0.1)
+plot(x, hazDW(x, mParamsP[[1]]), type = "l", ylim = c(0, .3))
+lines(x, hazDW(x, mParamsV[[1]]), col = 2)
+for(i in 2 : 5) lines(x, hazDW(x, mParamsV[[i]]), lty = i)
+```
+
+```{r GenerateData}
+copulaInd <- normalCopula(0, sites)
+dataVInd  <- generateDWData(mParamsV, copulaInd, xpar)
+dataPInd  <- generateDWData(mParamsP, copulaInd, xpar)
 ```
 
 This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.

@@ -49,6 +49,8 @@ polynomialTransition <- function(x) {
 #    return(y)
 #}
 
+#' @export
+#' @rdname DistortedWeibull
 hazDW <- function(x, parameters) {
     a <- hazW(x, parameters)
     b <- hazGpd(x, parameters)
@@ -198,6 +200,8 @@ calculatePenUltimateShapeParameter <- function(kappa, tau) {
   return(xi)
 }
 
+#' @importFrom copula rCopula
+#' @export
 generateDWData <- function(marginalParameters, copula, xpar) {
   uniform <- rCopula(xpar$T, copula)
   data    <- foreach(s = 1 : xpar$S, .combine = "cbind") %dopar% {

@@ -2,9 +2,12 @@
 
 export(calculateCorrespondingWeibullShape)
 export(dDW)
+export(generateDWData)
+export(hazDW)
 export(pDW)
 export(qDW)
 export(rDW)
 export(setMarginalParameters)
 import(foreach)
+importFrom(copula,rCopula)
 importFrom(evd,qgpd)

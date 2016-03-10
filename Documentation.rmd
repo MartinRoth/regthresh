@@ -40,13 +40,19 @@ gamma   <- 0.5
 xi      <- 0.15
 kappasV <- rbeta(xpar$S, 2, 5) + 0.5
 kappasP <- rep(calculateCorrespondingWeibullShape(0.15, tau), xpar$S)
-betas   <- runif(16, 2, 4) #c(  2,   4,   4,   3, 2.75, 3.25, 3.75, 3.5, 3.375,    3, 3.75,   3, 4, 3.5, 2.5)
-
+betas   <- runif(16, 2, 4)
 
 mParamsV <- setMarginalParameters(tau = tau, epsilon = epsilon, betas = betas
     ,kappas = kappasV, gamma = gamma, xi = xi) 
 mParamsP <- setMarginalParameters(tau = tau, epsilon = epsilon, betas = betas
     ,kappas = kappasP, gamma = gamma, xi = xi)
+```
+
+```{r PlotStuff}
+x <- seq(0, 50, by = 0.1)
+plot(x, pDW(x, mParamsP[[1]]), type = "l")
+for(i in 2 : 5) lines(x, pDW(x, mParamsV[[i]]), lty = i)
+abline(h = 0.95, col = 2, lty = 3)
 ```
 
 This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.

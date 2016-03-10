@@ -1,3 +1,6 @@
+#' @import foreach
+NULL
+
 ## Set parameters
 hazDWParUpdate <- function(parameters) {
     # set threshold dependent on tau
@@ -203,22 +206,33 @@ generateDWData <- function(marginalParameters, copula, xpar) {
   return(data)
 }
 
+#' @importFrom evd qgpd
+#' @note 2016-03-10: We switched from POT to evd (which has no lambda)
 getTrueReturnLevels <- function(params, xpar, returnPeriods, blockLength) {
   tmp <- foreach(i = 1 : xpar$S, .combine = "cbind") %do% {
     loc    = params[[i]]$loc
     scale  = params[[i]]$gamma * loc
     shape  = params[[i]]$xi
-    lambda = params[[i]]$tau
-    p      = 1 - 1/returnPeriods/blockLength
-    return(qgpd(p = p, loc = loc, scale = scale, shape = shape
-                , lambda = lambda))
+    tau = params[[i]]$tau
+    p      = 1 - 1/(returnPeriods * (1-tau) * blockLength)
+    return(qgpd(p = p, loc = loc, scale = scale, shape = shape))
   }
   colnames(tmp) = 1 : xpar$S
   rownames(tmp) = retPeriods
   return(tmp)
 }
 
-## Distorted Weibull
+#' Distorted Weibull distribution
+#' @param parameters Weibull parameters
+#' @note TODO: Switch to named parameters
+#' @param x,q quantile
+#' @param tau Belongs to parameters
+#' @param n number of observations
+#' @name DistortedWeibull
+NULL
+
+#' @rdname DistortedWeibull
+#' @export
 rDW <- function(n, parameters) {
     f <- function(x, parameters, tau) {
         return(1 - exp(-HazDW(x, parameters)) - tau)
@@ -231,6 +245,8 @@ rDW <- function(n, parameters) {
     return(result)
 }
 
+#' @rdname DistortedWeibull
+#' @export
 qDW <- function(tau, parameters) {
     f <- function(x, parameters, tau) {
         return(1 - exp(-HazDW(x, parameters)) - tau)
@@ -242,10 +258,14 @@ qDW <- function(tau, parameters) {
     return(result)
 }
 
+#' @rdname DistortedWeibull
+#' @export
 pDW <- function(q, parameters) {
     return(1 - exp(-HazDW(q, parameters)))
 }
 
+#' @rdname DistortedWeibull
+#' @export
 dDW <- function(x, parameters) {
     return(hazDW(x, parameters) * exp(-HazDW(x, parameters)))
 }

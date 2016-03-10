@@ -1,0 +1,11 @@
+Package: regthresh
+Type: Package
+Title: Regional Threshold Analysis
+Version: 0.1
+Date: 2016-03-10
+Author: M. Roth
+Maintainer: M. Roth <roth@knmi.nl>
+Description: More about what it does (maybe more than one line)
+License: What license is it under?
+LazyData: TRUE
+RoxygenNote: 5.0.1

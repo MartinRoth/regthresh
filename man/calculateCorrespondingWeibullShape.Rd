@@ -6,6 +6,11 @@
 \usage{
 calculateCorrespondingWeibullShape(xi, tau)
 }
+\arguments{
+\item{xi}{GPD shape parameter}
+
+\item{tau}{Quantile where GPD behaviors sets in}
+}
 \description{
 that corresponds to a GPD shape parameter xi at quantile tau
 }

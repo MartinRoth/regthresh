@@ -163,6 +163,12 @@ HazTransitionGpdHelp <- function(x, parameters) {
 }
 
 #' Get marginal parameters of the distorted Weibull distribution
+#' @param tau Quantile where GPD behaviors sets in
+#' @param epsilon Length of transition interval
+#' @param betas Weibull scale parameter
+#' @param kappas Weibull shape parameter
+#' @param gamma GPD dispersion coefficient
+#' @param xi GPD shape parameter
 #' @export
 setMarginalParameters <- function(tau, epsilon, betas, kappas, gamma, xi) {
   mParams <- list()
@@ -178,6 +184,7 @@ setMarginalParameters <- function(tau, epsilon, betas, kappas, gamma, xi) {
 #' Calculates the Weibull shape parameter
 #'
 #' that corresponds to a GPD shape parameter xi at quantile tau
+#' @inheritParams setMarginalParameters
 #' @export
 calculateCorrespondingWeibullShape <- function(xi, tau) {
   kappa <- (xi * (- log(1 - tau)) + 1)^(-1)

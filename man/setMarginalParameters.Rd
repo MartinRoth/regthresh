@@ -6,6 +6,19 @@
 \usage{
 setMarginalParameters(tau, epsilon, betas, kappas, gamma, xi)
 }
+\arguments{
+\item{tau}{Quantile where GPD behaviors sets in}
+
+\item{epsilon}{Length of transition interval}
+
+\item{betas}{Weibull scale parameter}
+
+\item{kappas}{Weibull shape parameter}
+
+\item{gamma}{GPD dispersion coefficient}
+
+\item{xi}{GPD shape parameter}
+}
 \description{
 Get marginal parameters of the distorted Weibull distribution
 }

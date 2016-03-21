@@ -68,7 +68,7 @@ lines(x, hazDW(x, mParamsV[[1]]), col = 2)
 for(i in 2 : 5) lines(x, hazDW(x, mParamsV[[i]]), lty = i)
 ```
 
-```{r GenerateData}
+```{r GenerateData, cache=TRUE}
 copulaInd <- normalCopula(0, sites)
 dataVInd  <- generateDWData(mParamsV, copulaInd, xpar)
 dataPInd  <- generateDWData(mParamsP, copulaInd, xpar)

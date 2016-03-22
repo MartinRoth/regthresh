@@ -74,6 +74,15 @@ dataVInd  <- generateDWData(mParamsV, copulaInd, xpar)
 dataPInd  <- generateDWData(mParamsP, copulaInd, xpar)
 ```
 
+Load rain data
+```{r LoadWaterschapData}
+library(rgdal)
+waterschap.rg      <- readOGR("./inst/extData/Waterschapsgrenzen_28992/","AU_AdministrativeUnitPolygon")
+waterschap.sp      <- spTransform(waterschap.rg, CRS("+proj=longlat"))
+ValleiEnVeluwe.sp  <- subset(waterschap.sp, waterschap.sp$name == "Vallei & Veluwe")
+library(knmiR)
+```
+
 This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
 
 When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:

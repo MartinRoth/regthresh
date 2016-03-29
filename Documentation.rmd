@@ -80,7 +80,9 @@ library(rgdal)
 waterschap.rg      <- readOGR("./inst/extData/Waterschapsgrenzen_28992/","AU_AdministrativeUnitPolygon")
 waterschap.sp      <- spTransform(waterschap.rg, CRS("+proj=longlat"))
 ValleiEnVeluwe.sp  <- subset(waterschap.sp, waterschap.sp$name == "Vallei & Veluwe")
-library(knmiR)
+
+prDat <- knmiR::HomogenPrecip(ValleiEnVeluwe.sp, period="1951/2015")
+summary(prDat)
 ```
 
 This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.

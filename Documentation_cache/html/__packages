@@ -1,13 +1,8 @@
 base
-methods
-datasets
-utils
-grDevices
-graphics
-stats
 regthresh
 copula
 foreach
 iterators
-parallel
 doParallel
+sp
+rgdal

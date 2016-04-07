@@ -9,6 +9,8 @@ output: html_document
 ```{r}
 library(regthresh)
 library(copula)
+library(rgdal)
+library(ggmap)
 library(doParallel)
 registerDoParallel()
 ```
@@ -76,26 +78,39 @@ dataPInd  <- generateDWData(mParamsP, copulaInd, xpar)
 
 Plot area of Vallei en Veluwe waterboard.
 ```{r LoadWaterschapData, cache=TRUE, include=FALSE}
-library(rgdal)
-library(ggmap)
 waterschap.rg      <- readOGR("./inst/extData/Waterschapsgrenzen_28992/","AU_AdministrativeUnitPolygon")
 waterschap.sp      <- spTransform(waterschap.rg, CRS("+proj=longlat"))
 ValleiEnVeluwe.sp  <- subset(waterschap.sp, waterschap.sp$name == "Vallei & Veluwe")
+ValleiEnVeluwe.dat <- fortify(ValleiEnVeluwe.sp) 
 
 basemap <- ggmap(get_map(location = c(lon = 5, lat = 52.5),
                     color = "color",
                     source = "stamen",
                     maptype = "watercolor",
                     zoom = 7))
-```
 
-```{r plotWaterboardBoundaries}
-print(basemap)
+focusBasemap <- ggmap(get_map(location = c(lon = 5.75, lat = 52.25),
+                     color = "color",
+                     source = "stamen",
+                     maptype = "watercolor",
+                     zoom = 9))
 ```
 
 Load rain data
-```{r LoadRainData, cache=TRUE}
+```{r LoadRainData, cache=FALSE}
 prDat <- knmiR::HomogenPrecip(ValleiEnVeluwe.sp, period="1951/2015")
+```
+
+```{r plotWaterboardBoundaries, echo=FALSE}
+overview <- basemap + geom_path(aes(x = long, y = lat), col = "red", size = 1, data = ValleiEnVeluwe.dat)
+print(overview)
+focusview <- focusBasemap + 
+  geom_path(aes(x = long, y = lat), col = "red", size = 1, data = ValleiEnVeluwe.dat) +
+  geom_point(aes(x = lon, y = lat), col = "black", shape = 3,
+             data = knmiR::stationMetaData[.(prDat[, unique(stationId)]), ]) +
+  geom_point(aes(x = lon, y = lat), col = "blue", shape = 4,
+             data = knmiR::stationMetaData[stationName=="Putten", ])
+print(focusview)
 ```
 
 ```{r summaryPrecipData}

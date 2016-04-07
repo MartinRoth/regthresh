@@ -10,7 +10,10 @@ output: html_document
 library(regthresh)
 library(copula)
 library(rgdal)
+library(extRemes)
+library(potreg)
 library(ggmap)
+library(data.table)
 library(doParallel)
 registerDoParallel()
 ```
@@ -99,11 +102,15 @@ focusBasemap <- ggmap(get_map(location = c(lon = 5.75, lat = 52.25),
 Load rain data
 ```{r LoadRainData, cache=FALSE}
 prDat <- knmiR::HomogenPrecip(ValleiEnVeluwe.sp, period="1951/2015")
+prDat[, year := year(date)]
+prDat[, month := month(date)]
+prDat <- prDat[month %in% c(6,7,8)]
 ```
 
 ```{r plotWaterboardBoundaries, echo=FALSE}
 overview <- basemap + geom_path(aes(x = long, y = lat), col = "red", size = 1, data = ValleiEnVeluwe.dat)
 print(overview)
+setkey(prDat, stationId)
 focusview <- focusBasemap + 
   geom_path(aes(x = long, y = lat), col = "red", size = 1, data = ValleiEnVeluwe.dat) +
   geom_point(aes(x = lon, y = lat), col = "black", shape = 3,
@@ -115,6 +122,81 @@ print(focusview)
 
 ```{r summaryPrecipData}
 summary(prDat)
+```
+
+```{r declustering}
+prDat[, jdays := julian(date, origin=as.Date("1951-01-01"))]
+setkey(prDat, stationId)
+
+#prDat[, prDcl2 := NA_real_]
+#system.time(prDat[, prDcl := potreg::declusterData(jdays, pr, 1), by = stationId])
+#system.time({
+prDcl <- foreach(stnId=unique(prDat[["stationId"]]), .combine = "c") %dopar% {
+  prDat[.(stnId), declusterData(jdays, pr, 1)]
+}
+prDat[, prDcl := prDcl]
+#})
+```
+
+```{r ObtainTSPlot} 
+ObtainTSPlot <- function(x, tau) {
+  tmp <- foreach(q = iter(tau), .combine = "rbind") %dopar% {
+    data.table(tau = q, shape = fevd(x, threshold = quantile(x, q), type="GP")$results$par[2])
+  }
+  return(tmp)
+}
+
+setQuantiles <- function(dat, tau) {
+  return(matrix(apply(dat, 2, quantile, tau),
+                nrow=nrow(dat), ncol=ncol(dat), byrow=TRUE))
+}
+
+getExceedances <- function(data, u) {
+  index        <- data > u
+  data[!index] <- NA
+  return(data)
+}
+
+getExcesses <- function(data, u) {
+  excesses <- getExceedances(data - u, 0)
+  return(excesses)
+}
+
+```
+
+```{r ThresholdStabilityPlotAtSite, cache=TRUE, dependson='ObtainTSPlot'}
+mTS1 <- prDat[stationId == knmiR::stationMetaData[stationName=="Putten", stationId], ObtainTSPlot(prDcl, probs)]
+#plot(probs[-(93:96)], mTS1[-(93:96)], xlab = "", ylab = "")
+#ggplot(mTS1, aes(x = tau, y = shape)) + geom_line() + xlim(c(0.9, 0.985)) + ylim(c(0, 0.3))
+```
+
+```{r ThresholdStabilityPlotRegional, cache=TRUE, dependson='ObtainTSPlot'}
+mSIVInd <- prDat[, ObtainTSPlot(prDcl, probs), by = stationId]
+mSIVInd <- mSIVInd[, .(type = "individual", shape = mean(shape)), by = tau]
+#ggplot(mSIVInd, aes(x = tau, y = shape)) + geom_line() + xlim(c(0.9, 0.985)) + ylim(c(0.025, 0.2))
+
+tmpData <- as.matrix(dcast(prDat, date ~ stationId, value.var = 'prDcl')[, -1, with=FALSE])
+tmpXpar <- list()
+tmpXpar$S <- ncol(tmpData)
+tmpXpar$T <- nrow(tmpData)
+fpar <- function(p, xpar) {
+  loc = xpar$loc
+  scale = p[1]*loc
+  shape = matrix(p[2], nrow = tmpXpar$T, ncol = tmpXpar$S)
+  list(loc = loc, scale = scale, shape = shape)
+}
+
+mTSCV <- foreach(q = iter(probs), .combine = "rbind") %dopar% {
+  tmpXpar$loc <- setQuantiles(tmpData, q)
+  excess <- getExcesses(tmpData, tmpXpar$loc)
+  tmp <- fitGpdFlex(excess, tmpXpar, fpar, hessian = TRUE,
+                numberOfParameters = 2, start = c(0.5, 0),  method = "BFGS",
+                control = list(maxit = 5000, ndeps = c(1e-03, 1e-05)))
+  return(data.table(type = "joint", tau = q, shape = tmp$estimate[2]))
+}
+
+ggplot(rbind(mSIVInd, mTSCV), aes(x = tau, y = shape, col = type)) + 
+  geom_line() + xlim(c(0.9, 0.985)) + ylim(c(0.025, 0.2))
 ```
 
 This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.

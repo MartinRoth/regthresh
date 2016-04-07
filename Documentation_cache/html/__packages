@@ -6,3 +6,7 @@ iterators
 doParallel
 sp
 rgdal
+ggplot2
+ggmap
+maps
+mapproj

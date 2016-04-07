@@ -74,14 +74,31 @@ dataVInd  <- generateDWData(mParamsV, copulaInd, xpar)
 dataPInd  <- generateDWData(mParamsP, copulaInd, xpar)
 ```
 
-Load rain data
-```{r LoadWaterschapData}
+Plot area of Vallei en Veluwe waterboard.
+```{r LoadWaterschapData, cache=TRUE, include=FALSE}
 library(rgdal)
+library(ggmap)
 waterschap.rg      <- readOGR("./inst/extData/Waterschapsgrenzen_28992/","AU_AdministrativeUnitPolygon")
 waterschap.sp      <- spTransform(waterschap.rg, CRS("+proj=longlat"))
 ValleiEnVeluwe.sp  <- subset(waterschap.sp, waterschap.sp$name == "Vallei & Veluwe")
 
+basemap <- ggmap(get_map(location = c(lon = 5, lat = 52.5),
+                    color = "color",
+                    source = "stamen",
+                    maptype = "watercolor",
+                    zoom = 7))
+```
+
+```{r plotWaterboardBoundaries}
+print(basemap)
+```
+
+Load rain data
+```{r LoadRainData, cache=TRUE}
 prDat <- knmiR::HomogenPrecip(ValleiEnVeluwe.sp, period="1951/2015")
+```
+
+```{r summaryPrecipData}
 summary(prDat)
 ```
 

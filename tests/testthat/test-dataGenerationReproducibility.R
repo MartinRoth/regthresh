@@ -1,7 +1,7 @@
 context("Data Generation")
 
 library(doParallel)
-registerDoParallel(2)
+registerDoParallel(1)
 
 test_that("correlated distorted weibull generation works", {
   set.seed(123)

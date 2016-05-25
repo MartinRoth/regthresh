@@ -15,5 +15,6 @@ LazyData: TRUE
 RoxygenNote: 5.0.1
 Suggests:
     testthat,
-    doParallel
+    doParallel,
+    covr
 SystemRequirements: Gnu Scientific Library version >= 1.12

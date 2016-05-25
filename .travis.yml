@@ -1,0 +1,20 @@
+# Sample .travis.yml for R projects
+
+# whitelist
+branches:
+  only:
+    - master
+    - develop
+
+language: r
+sudo: required
+cache: packages
+warnings_are_errors: true
+
+r_binary_packages:
+  - gsl
+
+r_packages:
+  - covr
+after_success:
+  - Rscript -e 'covr::codecov()'

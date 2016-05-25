@@ -4,7 +4,7 @@
 \alias{setMarginalParameters}
 \title{Get marginal parameters of the distorted Weibull distribution}
 \usage{
-setMarginalParameters(tau, epsilon, betas, kappas, gamma, xi)
+setMarginalParameters(tau, epsilon, betas, kappas, gamma, xi, xpar)
 }
 \arguments{
 \item{tau}{Quantile where GPD behaviors sets in}
@@ -18,6 +18,8 @@ setMarginalParameters(tau, epsilon, betas, kappas, gamma, xi)
 \item{gamma}{GPD dispersion coefficient}
 
 \item{xi}{GPD shape parameter}
+
+\item{xpar}{For the spatial and temporal dimension}
 }
 \description{
 Get marginal parameters of the distorted Weibull distribution

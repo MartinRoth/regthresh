@@ -13,5 +13,8 @@ Imports:
     foreach
 LazyData: TRUE
 RoxygenNote: 5.0.1
-Suggests: testthat
+Suggests:
+    testthat,
+    doParallel
+
 SystemRequirements: Gnu Scientific Library version >= 1.12

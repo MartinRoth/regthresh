@@ -5,3 +5,4 @@
 ^Documentation_cache/.+$
 ^Documentation_files/.+$
 ^rainData\.R$
+^\.travis\.yml$

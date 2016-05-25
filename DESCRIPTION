@@ -5,10 +5,12 @@ Version: 0.1
 Date: 2016-03-10
 Author: M. Roth
 Maintainer: M. Roth <roth@knmi.nl>
-Description: More about what it does (maybe more than one line)
-License: What license is it under?
+Description: Demonstrates how to use regional threshold selection.
+License: CC BY-NC 4.0
 Imports:
     evd,
+    copula,
     foreach
 LazyData: TRUE
 RoxygenNote: 5.0.1
+Suggests: testthat

@@ -174,8 +174,9 @@ HazTransitionGpdHelp <- function(x, parameters) {
 #' @param kappas Weibull shape parameter
 #' @param gamma GPD dispersion coefficient
 #' @param xi GPD shape parameter
+#' @param xpar For the spatial and temporal dimension
 #' @export
-setMarginalParameters <- function(tau, epsilon, betas, kappas, gamma, xi) {
+setMarginalParameters <- function(tau, epsilon, betas, kappas, gamma, xi, xpar) {
   mParams <- list()
   for (site in 1 : xpar$S) {
     mParams[[site]] <- list(tau = tau, epsilon = epsilon
@@ -200,9 +201,15 @@ calculatePenUltimateShapeParameter <- function(kappa, tau) {
   return(xi)
 }
 
+#' Generates correlated, distorted weibull data
+#' @param marginalParameters list of marginal parameters
+#' @param copula copula object
+#' @param xpar named list with `S` the number of sites
+#' and `T` the number of days
 #' @importFrom copula rCopula
 #' @export
 generateDWData <- function(marginalParameters, copula, xpar) {
+  s <- NULL
   uniform <- rCopula(xpar$T, copula)
   data    <- foreach(s = 1 : xpar$S, .combine = "cbind") %dopar% {
     return(qDW(uniform[, s], parameters = marginalParameters[[s]]))
@@ -213,6 +220,7 @@ generateDWData <- function(marginalParameters, copula, xpar) {
 #' @importFrom evd qgpd
 #' @note 2016-03-10: We switched from POT to evd (which has no lambda)
 getTrueReturnLevels <- function(params, xpar, returnPeriods, blockLength) {
+  i <- NULL
   tmp <- foreach(i = 1 : xpar$S, .combine = "cbind") %do% {
     loc    = params[[i]]$loc
     scale  = params[[i]]$gamma * loc
@@ -222,7 +230,7 @@ getTrueReturnLevels <- function(params, xpar, returnPeriods, blockLength) {
     return(qgpd(p = p, loc = loc, scale = scale, shape = shape))
   }
   colnames(tmp) = 1 : xpar$S
-  rownames(tmp) = retPeriods
+  rownames(tmp) = returnPeriods
   return(tmp)
 }
 

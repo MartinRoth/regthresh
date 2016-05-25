@@ -1,2 +1,7 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
+^Documentation\.html$
+^Documentation\.rmd$
+^Documentation_cache/.+$
+^Documentation_files/.+$
+^rainData\.R$

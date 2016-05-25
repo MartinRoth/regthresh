@@ -51,9 +51,9 @@ kappasP <- rep(calculateCorrespondingWeibullShape(0.15, tau), xpar$S)
 betas   <- runif(16, 2, 4)
 
 mParamsV <- setMarginalParameters(tau = tau, epsilon = epsilon, betas = betas
-    ,kappas = kappasV, gamma = gamma, xi = xi) 
+    ,kappas = kappasV, gamma = gamma, xi = xi, xpar = xpar) 
 mParamsP <- setMarginalParameters(tau = tau, epsilon = epsilon, betas = betas
-    ,kappas = kappasP, gamma = gamma, xi = xi)
+    ,kappas = kappasP, gamma = gamma, xi = xi, xpar = xpar)
 ```
 
 ```{r PlotStuff}

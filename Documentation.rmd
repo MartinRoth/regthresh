@@ -18,7 +18,7 @@ library(doParallel)
 registerDoParallel()
 ```
 
-```{r GeneralSimulationSettigns}
+```{r GeneralSimulationSettigns, cache=TRUE}
 sites <- 16
 years <- 50
 blockLength <- 92
@@ -27,7 +27,7 @@ probs <- seq(.9, .995, by = 0.001)
 retPeriods <- c(5, 50, 100)
 ```
 
-```{r CreateXpar}
+```{r CreateXpar, cache=TRUE, dependson='GeneralSimulationSettings'}
 xpar <- list()
 xpar$S <- sites
 xpar$T <- days
@@ -41,7 +41,7 @@ xpar$nOfP <- 2
 xpar$start <- c(0.5, 0)
 ```
 
-```{r SetMarginalParameters}
+```{r SetMarginalParameters, cache=TRUE, dependson='CreateXpar'}
 tau     <- 0.95
 epsilon <- 0.25 
 gamma   <- 0.5
@@ -73,7 +73,7 @@ lines(x, hazDW(x, mParamsV[[1]]), col = 2)
 for(i in 2 : 5) lines(x, hazDW(x, mParamsV[[i]]), lty = i)
 ```
 
-```{r GenerateData, cache=TRUE}
+```{r GenerateData, cache=TRUE, dependson='SetMarginalParameters'}
 copulaInd <- normalCopula(0, sites)
 dataVInd  <- generateDWData(mParamsV, copulaInd, xpar)
 dataPInd  <- generateDWData(mParamsP, copulaInd, xpar)
@@ -100,7 +100,7 @@ focusBasemap <- ggmap(get_map(location = c(lon = 5.75, lat = 52.25),
 ```
 
 Load rain data
-```{r LoadRainData, cache=FALSE}
+```{r LoadRainData, cache=TRUE}
 prDat <- knmiR::HomogenPrecip(ValleiEnVeluwe.sp, period="1951/2015")
 prDat[, year := year(date)]
 prDat[, month := month(date)]
@@ -124,7 +124,7 @@ print(focusview)
 summary(prDat)
 ```
 
-```{r declustering}
+```{r declustering, cache=TRUE, dependson='LoadRainData'}
 prDat[, jdays := julian(date, origin=as.Date("1951-01-01"))]
 setkey(prDat, stationId)
 
@@ -138,7 +138,7 @@ prDat[, prDcl := prDcl]
 #})
 ```
 
-```{r ObtainTSPlot} 
+```{r ObtainTSPlot, cache = TRUE} 
 ObtainTSPlot <- function(x, tau) {
   tmp <- foreach(q = iter(tau), .combine = "rbind") %dopar% {
     data.table(tau = q, shape = fevd(x, threshold = quantile(x, q), type="GP")$results$par[2])
@@ -164,13 +164,13 @@ getExcesses <- function(data, u) {
 
 ```
 
-```{r ThresholdStabilityPlotAtSite, cache=TRUE, dependson='ObtainTSPlot'}
+```{r ThresholdStabilityPlotAtSite, cache=TRUE, dependson=c('ObtainTSPlot', 'declustering')}
 mTS1 <- prDat[stationId == knmiR::stationMetaData[stationName=="Putten", stationId], ObtainTSPlot(prDcl, probs)]
 #plot(probs[-(93:96)], mTS1[-(93:96)], xlab = "", ylab = "")
 #ggplot(mTS1, aes(x = tau, y = shape)) + geom_line() + xlim(c(0.9, 0.985)) + ylim(c(0, 0.3))
 ```
 
-```{r ThresholdStabilityPlotRegional, cache=TRUE, dependson='ObtainTSPlot'}
+```{r ThresholdStabilityPlotRegional, cache=TRUE, dependson=c('ObtainTSPlot', 'declustering')}
 mSIVInd <- prDat[, ObtainTSPlot(prDcl, probs), by = stationId]
 mSIVInd <- mSIVInd[, .(type = "individual", shape = mean(shape)), by = tau]
 #ggplot(mSIVInd, aes(x = tau, y = shape)) + geom_line() + xlim(c(0.9, 0.985)) + ylim(c(0.025, 0.2))

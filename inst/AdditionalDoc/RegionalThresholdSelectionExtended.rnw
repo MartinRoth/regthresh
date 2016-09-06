@@ -1,0 +1,319 @@
+%\documentclass[10pt,fleqn, handout]{beamer}
+\documentclass[10pt,fleqn]{beamer}
+
+\usepackage{lmodern}
+\usepackage{knmiBeamer}
+\Engelstrue     % For English slides
+
+
+\usepackage{helvet}
+\usepackage{appendixnumberbeamer}
+
+%% additional style files
+% -----------------------
+\usepackage[english]{babel}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\hypersetup{colorlinks, linkcolor=}
+
+\usepackage{mathtools}
+\usepackage{bm}
+\usepackage{booktabs}
+
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,positioning}
+%\usepackage[labelformat=empty]{caption}
+% \setbeamertemplate{caption}[numbered]
+%\usepackage[caption=false,margin=5pt,singlelinecheck=false,labelformat=empty,justification=centering]{subfig}
+\tikzset{
+    %Define standard arrow tip
+    >=stealth',
+    %Define style for boxes
+    punkt/.style={
+           rectangle,
+           rounded corners,
+           draw=black, very thick,
+           text width=4.5cm,%6.5em,
+           minimum height=2em,
+           text centered},
+    % Define arrow style
+    pil/.style={
+           ->,
+           thick,
+           shorten <=2pt,
+           shorten >=2pt,}
+}
+
+% -------------
+% Figure labels
+% -------------
+%\usepackage{caption}
+%\captionsetup{labelformat=empty,labelsep=none}
+%\captionsetup{labelsep=':'}
+%\usepackage{subcaption}
+\setbeamertemplate{caption}{\raggedright\insertcaption\par}
+
+\newcommand{\MYhref}[3][KnmiDarkBlue]{\href{#2}{\color{#1}{#3}}}
+% -----------------
+% title information
+% -----------------
+\title[Regional Threshold Selection]{Threshold selection for regional peaks-over-threshold data}
+\author[M. Roth (\MYhref{mailto:roth@knmi.nl}{roth@knmi.nl})]{Martin Roth\texorpdfstring{\\[2mm] \scriptsize \href{mailto:roth@knmi.nl}{roth@knmi.nl}\\[4mm] {\scriptsize Joint work with A. Buishand and G. Jongbloed}}{}}
+\date{}
+
+
+% -----------------------------------------------
+% whether to include outline at every new section
+% -----------------------------------------------
+%\AtBeginSection[]{\frame{\LOGODEF\frametitle{Outline}\tableofcontents[part=1,current]}}
+
+% ---------------
+% Graphics folder
+% ---------------
+\graphicspath{{fig/}}
+
+\begin{document}
+
+%\renewcommand{\titleFigure}{Dubai.jpg}
+
+% ----------
+% title page
+% ----------
+\begin{frame}
+ \titlepage
+\end{frame}
+
+\begin{frame}{Area of Interest}
+ \begin{textblock*}{5cm}(1cm,2.4cm)
+  \includegraphics[width=5cm, height=5cm]{overview.pdf}
+ \end{textblock*}
+ \begin{textblock*}{5cm}(6.5cm,2.5cm)
+  \includegraphics[width=5cm, height=4.8cm]{focusview.pdf}
+ \end{textblock*}
+ \begin{textblock*}{11cm}(0.75cm, 7.5cm)\centering
+  Waterboard Vallei \& Veluwe \\
+  21 daily precipitation series for 1951--2009 \\
+  {\tiny Buishand et al. (2013): Homogeneity of precipitation series in the Netherlands and their trends in the past century. \emph{Int. J. Climatol.,}}
+ \end{textblock*}
+\end{frame}
+
+
+\begin{frame}{Why Threshold Selection?}
+ \begin{block}{Two main approaches for extreme value analysis}
+  \begin{itemize}
+   \item Block maxima -- one value per year \\
+    $\Rightarrow$ Generalized extreme value distribution
+   \item Peaks-over-threshold -- all peak values above a threshold \\
+    $\Rightarrow$ Generalized Pareto distribution (GPD)
+  \end{itemize}
+ \end{block}
+ \begin{block}{Trade-off situation}
+  \begin{itemize}
+   \item Low thresholds lead to bias in the analysis of the excesses
+   \item High thresholds result in high parameter estimation uncertainty
+  \end{itemize}
+ \end{block}
+\end{frame}
+
+\begin{frame}{Preliminaries}
+ \begin{block}{At-site methods for threshold selection}
+  \begin{itemize}
+   \item Visual inspection: mean excess plot, threshold stability plot
+   \item Goodness of Fit tests: Anderson--Darling or Kolmogorov--Smirnov statistic
+   \item Many more ... \footnote{\tiny Scarrott and MacDonald (2012): A review of extreme value threshold estimation and uncertainty quantification. \emph{REVSTAT}}
+  \end{itemize}
+ \end{block}
+ \begin{block}{Regional frequency analysis}
+  \begin{itemize}
+   \item Reduces parameter estimation uncertainty
+   \item Often regional constant exceedance probability (e.g. 5\%)
+   \item \alert{But inference on threshold level only on at-site basis}
+  \end{itemize}
+ \end{block}
+\end{frame}
+
+\begin{frame}{Simulation: Smooth Marginal Distribution}
+ Any continuous distribution $F$ on $[0,\infty)$ can be written as
+ \begin{equation*}
+  F(x) = %1 - \exp(-H(x)) =
+         1 - \exp \Bigl( - \int_0^x h(u)\,du \Bigr),
+ \end{equation*}
+ where $h$ is the hazard rate of the distribution. %If $h$ is differentiable then also the density $f$.
+ Define %A smooth density for a specific bulk (e.g. Weibull) distribution and a GPD tail above the threshold $u$ can be obtained by defining
+ \begin{equation*}
+  h(x) \coloneqq \eta\left(\frac{x-u}{\varepsilon}\right) h_1(x) +
+       \left(1 - \eta\left(\frac{x-u}{\varepsilon}\right)\right) h_2(x),
+ \end{equation*}
+ with $h_1$ the hazard rate of some bulk distribution, $h_2$ the hazard rate of the GPD, and $\eta$ some smooth transition function.
+\end{frame}
+% NOTE: Hazard rate is the the ratio of the survival function (no death until t) divided by the density
+
+\begin{frame}
+  \frametitle<1-2>{Threshold Stability Plot}
+  \frametitle<3>{Threshold Stability Plot -- \alert{Averaged}}
+  \begin{figure}
+   \centering
+   % Figures from file Dropbox/1_Projects/3_Paper/Scriptfiles/SpatialGpdBootstrap.R
+   \only<1|handout:0>{\includegraphics[width=0.9\textwidth]{regional_threshold_selection_1.pdf}}%
+   \only<2|handout:0>{\includegraphics[width=0.9\textwidth]{regional_threshold_selection_2.pdf}}%
+   \only<3|handout:1>{\includegraphics[width=0.9\textwidth]{regional_threshold_selection_3.pdf}}%
+   \vspace{-2mm}
+   \caption{$\tau$ is the non-exceedance probability. The vertical line indicates the start of the GPD tail and the horizontal line shows the true shape parameter of the simulated data.}
+   %\uncover<3>{\caption{Averaged threshold stability plot (red) obtained from individual plots (grey) for simulated data. The dashed vertical line gives the true threshold and the horizontal line the predefined shape parameter.}}
+  \end{figure}
+\end{frame}
+
+
+
+%\begin{frame}{Several stations - TS plot}
+% \includegraphics[width=9cm]{mean_threshold_stability.pdf}
+%\end{frame}
+
+\begin{frame}{GOF Test and Automatic Selection}
+ \begin{textblock*}{9cm}(1.5cm, 3cm)\centering
+  \includegraphics[width=9cm]{size_effect2.pdf}
+ \end{textblock*}
+ \begin{textblock*}{11cm}(0.75cm, 7.75cm)\centering
+  %Selected probability based on the 95\% critical value of the KS statistic, given by first value in [0.9, 0.99] that does not exceed the critical value.
+  Violin plots of the selected threshold based on the lowest value of $\tau$ for which the average KS statistic is not significant at the 5\% level.
+ \end{textblock*}
+\end{frame}
+
+
+\newcommand{\upperTailDep}{l^{\mathrm{u}}}
+\begin{frame}{Simulation: Spatial Dependence}
+ \begin{block}{Copula approach}
+  \begin{itemize}
+   \item Normal copula $\Rightarrow$ weak tail dependence
+   \item Gumbel copula $\Rightarrow$ strong tail dependence
+  \end{itemize}
+ \end{block}
+ \begin{block}{Quantile based measure of tail dependence}
+  \begin{equation*}
+   \upperTailDep(\tau) \coloneqq  P\left(X_1 > F_1^{-1}(\tau) | X_2 > F_2^{-1}(\tau) \right)
+  \end{equation*}
+ \end{block}
+ %$\upperTailDep(\tau)$ can be simply estimated from the data by counting the excesses over the sample $\tau$-quantile.
+
+ Copula parameter can be chosen such that $\upperTailDep(0.9)$ is the same.
+ %\begin{table}
+ % \centering
+ % \begin{tabular}{cccccc}
+ %  \toprule
+ %  $\upperTailDep(0.9)$ & 0.1 & 0.25 & 0.5   & 0.75 & 0.9   \\
+ %  \midrule
+ %  $\theta$ & 1 & 1.1514 & 1.5994  & 2.9254 & 6.8769    \\
+ %  $\rho$   & 0 & 0.3686 & 0.7366  & 0.9358 & 0.9898    \\
+ %  \bottomrule
+ % \end{tabular}
+ % \caption{Gumbel copula parameter $\theta$ and normal copula parameter $\rho$ used in the simulation of spatial dependent data.}
+ % \label{tab:UsedParameters}
+ %\end{table}
+\end{frame}
+
+\begin{frame}{Effect of Spatial Dependence}
+ \begin{textblock*}{9cm}(1.5cm, 3cm)\centering
+  \includegraphics[width=9cm]{AEE0.pdf}
+ \end{textblock*}
+ \begin{textblock*}{11cm}(0.75cm, 7.75cm)\centering
+  Averaged Euclidean error of the 5- (dots) and 50-year (triangles) return level for simulated data (red - Gumbel copula, blue - normal copula)
+ \end{textblock*}
+\end{frame}
+
+%\begin{frame}{Spatial dependence}
+% \begin{textblock*}{9cm}(1.5cm, 3cm)\centering
+%  \includegraphics[width=9cm]{tail_dependence_rain_data.pdf}
+% \end{textblock*}
+% \begin{textblock*}{11cm}(0.75cm, 7.75cm)\centering
+%  Estimated measure of dependence $\upperTailDep(0.9)$ versus distance for the rainfall data. The smooth line is obtained by a loess smoother.
+% \end{textblock*}
+%\end{frame}
+
+
+\begin{frame}[label=AtSiteKS]{At-site KS Statistic}
+ \begin{textblock*}{9cm}(1.5cm, 2.75cm)\centering
+  \includegraphics[width=9cm]{KS_statistic_Putten2.pdf}
+ \end{textblock*}
+ \begin{textblock*}{11cm}(0.75cm, 7.5cm)\centering
+  The blue line gives the KS statistic and the red the 95\% critical values.
+ \end{textblock*}
+\end{frame}
+
+\begin{frame}{Regional KS Statistic}
+ \begin{textblock*}{9cm}(1.5cm, 2.75cm)\centering
+  \includegraphics[width=9cm]{common_KS_statistic_rain_data.pdf}
+ \end{textblock*}
+ \begin{textblock*}{11cm}(0.75cm, 7.5cm)\centering
+  The red line gives the regionally averaged KS statistic, the three other lines give the 95\% critical values
+  based on the Normal (blue), distance-dependent Normal (purple), and Gumbel copula (green).
+ \end{textblock*}
+\end{frame}
+
+\begin{frame}{Effect on Return Levels}
+ \begin{textblock*}{9cm}(1.5cm, 2.7cm)\centering
+  \includegraphics[width=8.5cm]{retLevels.pdf}
+  \begin{picture}(0,0)
+   \put(-235,+70){\rotatebox{+90}{\scriptsize mm}}
+   \put(-110,+0){\scriptsize $\tau$}
+  \end{picture}
+ \end{textblock*}
+ \begin{textblock*}{11cm}(0.75cm, 7.75cm)\centering
+  Average return level as a function of the non-exceedance probability of the selected threshold for return periods of 5 (red), 50 (green) and 500 (blue) years.
+ \end{textblock*}
+\end{frame}
+
+\begin{frame}{Conclusion}
+ \begin{block}{Use RFA principles also for threshold selection!}
+  GoF based approach not restricted to the GPD.
+ \end{block}
+ \begin{block}{Outlook}
+  \begin{itemize}
+   \item Inspect the role of selection criterion
+   \item Extend the approach to incorporate trends
+  \end{itemize}
+ \end{block}
+ \begin{thebibliography}{8}
+  \beamertemplatearticlebibitems
+  \bibitem{Roth.etal2016}
+   Roth, M., G. Jongbloed, and T.~A. Buishand (2016),
+   \newblock Threshold selection for regional peaks-over-threshold data.
+   \newblock {\em Journal of Applied Statistics}, 43:1291--1309.
+ \end{thebibliography}
+\end{frame}
+
+\appendix
+
+\begin{frame}
+\end{frame}
+
+\begin{frame}{Kolmogrov-Smirnov statistic}
+ \begin{enumerate}
+  \item[(1)] Fix $\tau_0$ and the corresponding threshold $u$.
+  \item[(2)] Estimate the parameters based on the $n$ excesses above $u$.
+  \item[(3a)] Simulate $n$ values from the corresponding GPD.
+  \item[(3b)] Sample $\tilde{n}$ from $B(T, 1-\tau_0)$. Simulate $\tilde{n}$ values from the corresponding GPD. \alert{Scales to regional setting.}
+  \item[(4)] Calculate KS statistic for the simulated data.
+  \item[(5)] Repeat steps 3 and 4 a thousand times and take the 0.95-quantile of the bootstrapped statistic as critical value for $D_n$ at $\tau_0$.
+  \item[(6)] Repeat procedure for every $\tau$ in a reasonable range.
+ \end{enumerate}
+\end{frame}
+
+\begin{frame}{Averaged Euclidean Error (AEE)}
+ \begin{equation*}
+  AEE(\tau) \coloneqq \frac1{B} \sum_{i=1}^B ||\bm{\hat{r}}_i(\tau) - \bm{r}||_2,
+  \label{eq:AEE}
+ \end{equation*}
+ where $||.||_2$ denotes the Euclidean (or $l_2$) norm, $B$ gives the number of bootstrap samples and $\bm{r}$ specifies some return level.
+\end{frame}
+
+\begin{frame}{Effect of Bulk--Tail Transition}
+ \begin{textblock*}{9cm}(1.5cm, 3cm)\centering
+  \includegraphics[width=9cm]{AEE_5year.pdf}
+ \end{textblock*}
+ \begin{textblock*}{11cm}(0.75cm, 7.75cm)\centering
+  AEE in the 5-year return level as a function of the probability $\tau$ for the simulated data (blue - bulk and tail are different, red - similar). The dashed horizontal lines indicate the AEE of the selected threshold.
+ \end{textblock*}
+\end{frame}
+\end{document}
+
+

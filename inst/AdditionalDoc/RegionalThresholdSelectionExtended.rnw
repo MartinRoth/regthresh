@@ -83,6 +83,30 @@
  \titlepage
 \end{frame}
 
+\begin{frame}{KNMI}
+ \begin{block}{General info}
+ \end{block}
+ \begin{block}{EVT related problems}
+  \begin{itemize}
+   \item point-wise extreme rainfall, temperature, wind gusts
+   \item combined extremes (Friesland example)
+   \item EVT for climate models (spatial extent)
+   \item EVT conditional on predictions (Jasper \& Juan)
+   \item EVT for earthquakes
+  \end{itemize}
+ \end{block}
+\end{frame}
+
+\begin{frame}{Myself}
+ \begin{itemize}
+  \item This is work on point-wise extreme precipitation
+  \item In my master thesis I focused on more high dimensional extremes, i.e. ...
+  \item before the analysis started I had to rescale (conceptually) the margins to unit Frechet
+  \item now I am stuck with the rescaling (and a long time has passed since my master thesis - so I am excited to refresh and expand my knowledge at this workshop)
+  \item but it is not only point-wise because we want to borrow strength from neighbors ...
+ \end{itemize}
+\end{frame}
+
 \begin{frame}{Area of Interest}
  \begin{textblock*}{5cm}(1cm,2.4cm)
   \includegraphics[width=5cm, height=5cm]{overview.pdf}
@@ -97,6 +121,69 @@
  \end{textblock*}
 \end{frame}
 
+\begin{frame}{Introduction to RFA}
+\end{frame}
+
+\begin{frame}{RFA and threshold selection}
+ short recap of threshold selection procedures and Figure 4.1
+\end{frame}
+
+\section{Idea}
+
+\begin{frame}{Extend visual diagnostics}
+\end{frame}
+
+\begin{frame}{Extend GOF diagnostics}
+\end{frame}
+
+\section{Simulation}
+
+\begin{frame}{Marginal model}
+ Short recap on marginal models - often not even continuous
+\end{frame}
+
+\begin{frame}{Our marginal model}
+\end{frame}
+
+\begin{frame}{Threshold plot}
+\end{frame}
+
+\begin{frame}{Mean excess plot}
+ note something on the shape estimate based on the slope
+\end{frame}
+
+\begin{frame}{Violin plots}
+ criterion!
+\end{frame}
+
+\begin{frame}{AEE plots}
+\end{frame}
+
+\begin{frame}{Spatial dependence model}
+\end{frame}
+
+\begin{frame}{AEE dependence}
+\end{frame}
+
+\section{Data results}
+
+\begin{frame}{Spatially averaged TS plot}
+\end{frame}
+
+\begin{frame}{Upper quantile dependence in the data}
+\end{frame}
+
+\begin{frame}{Averaged KS statistic}
+\end{frame}
+
+\begin{frame}{Summary}
+\end{frame}
+
+\begin{frame}{References}
+\end{frame}
+
+\begin{frame}{Your ideas? Comments?}
+\end{frame}
 
 \begin{frame}{Why Threshold Selection?}
  \begin{block}{Two main approaches for extreme value analysis}

@@ -138,6 +138,7 @@
 
 \section{Simulation}
 
+\subsection{Marginal model}
 \begin{frame}{Marginal model}
  Short recap on marginal models - often not even continuous
 \end{frame}
@@ -145,6 +146,7 @@
 \begin{frame}{Our marginal model}
 \end{frame}
 
+\subsection{Independent simulations}
 \begin{frame}{Threshold plot}
 \end{frame}
 
@@ -152,28 +154,64 @@
  note something on the shape estimate based on the slope
 \end{frame}
 
+\subsection{GoF based diagnostics}
 \begin{frame}{Violin plots}
  criterion!
 \end{frame}
 
-\begin{frame}{AEE plots}
+\begin{frame}{Effect of Bulk--Tail Transition}
+ \begin{textblock*}{9cm}(1.5cm, 3cm)\centering
+  \only<1>{\includegraphics[width=9cm]{AEE_5year.pdf}}
+  \only<2>{\includegraphics[width=9cm]{AEE_50year.pdf}}
+ \end{textblock*}
+ \begin{textblock*}{11cm}(0.75cm, 7.75cm)\centering
+  AEE in the 5-year return level as a function of the probability $\tau$ for the simulated data (blue - bulk and tail are different, red - similar). The dashed horizontal lines indicate the AEE of the selected threshold.
+ \end{textblock*}
 \end{frame}
 
+\subsection{Dependent simulations}
 \begin{frame}{Spatial dependence model}
 \end{frame}
 
-\begin{frame}{AEE dependence}
+\begin{frame}{Effect of Spatial Dependence}
+ \begin{textblock*}{9cm}(1.5cm, 3cm)\centering
+  \includegraphics[width=9cm]{AEE0.pdf}
+ \end{textblock*}
+ \begin{textblock*}{11cm}(0.75cm, 7.75cm)\centering
+  Averaged Euclidean error of the 5- (dots) and 50-year (triangles) return level for simulated data (red - Gumbel copula, blue - normal copula)
+ \end{textblock*}
 \end{frame}
 
 \section{Data results}
 
 \begin{frame}{Spatially averaged TS plot}
+\begin{textblock*}{9cm}(1.5cm,3cm)
+  \includegraphics[width=9cm]{threshold_stability_rain_data.pdf}
+ \end{textblock*}
+ \begin{textblock*}{11cm}(0.75cm, 7.5cm)\centering
+  Threshold stability plot
+  Say something on the linear increase and the stable region afterwards
+  In particular we can reject too low thresholds
+ \end{textblock*}
 \end{frame}
 
-\begin{frame}{Upper quantile dependence in the data}
+\begin{frame}{Quantile dependence in the data}
+\begin{textblock*}{9cm}(1.5cm,3cm)
+  \includegraphics[width=9cm]{tail_dependence_rain_data.pdf}
+ \end{textblock*}
+ \begin{textblock*}{11cm}(0.75cm, 7.5cm)\centering
+  Dependence in the 0.9 quantile of the rainfall data versus distance.
+  Say something that the decay with distance indicates tail independent data.
+ \end{textblock*}
 \end{frame}
 
 \begin{frame}{Averaged KS statistic}
+ \begin{textblock*}{9cm}(1.5cm,3cm)
+  \includegraphics[width=9cm]{common_KS_statistic_rain_data.pdf}
+ \end{textblock*}
+ \begin{textblock*}{11cm}(0.75cm, 7.5cm)\centering
+  Spatially averaged KS statistic for the three different dependence models
+ \end{textblock*}
 \end{frame}
 
 \begin{frame}{Summary}
@@ -298,14 +336,6 @@
  %\end{table}
 \end{frame}
 
-\begin{frame}{Effect of Spatial Dependence}
- \begin{textblock*}{9cm}(1.5cm, 3cm)\centering
-  \includegraphics[width=9cm]{AEE0.pdf}
- \end{textblock*}
- \begin{textblock*}{11cm}(0.75cm, 7.75cm)\centering
-  Averaged Euclidean error of the 5- (dots) and 50-year (triangles) return level for simulated data (red - Gumbel copula, blue - normal copula)
- \end{textblock*}
-\end{frame}
 
 %\begin{frame}{Spatial dependence}
 % \begin{textblock*}{9cm}(1.5cm, 3cm)\centering
@@ -393,14 +423,7 @@
  where $||.||_2$ denotes the Euclidean (or $l_2$) norm, $B$ gives the number of bootstrap samples and $\bm{r}$ specifies some return level.
 \end{frame}
 
-\begin{frame}{Effect of Bulk--Tail Transition}
- \begin{textblock*}{9cm}(1.5cm, 3cm)\centering
-  \includegraphics[width=9cm]{AEE_5year.pdf}
- \end{textblock*}
- \begin{textblock*}{11cm}(0.75cm, 7.75cm)\centering
-  AEE in the 5-year return level as a function of the probability $\tau$ for the simulated data (blue - bulk and tail are different, red - similar). The dashed horizontal lines indicate the AEE of the selected threshold.
- \end{textblock*}
-\end{frame}
+
 \end{document}
 
 

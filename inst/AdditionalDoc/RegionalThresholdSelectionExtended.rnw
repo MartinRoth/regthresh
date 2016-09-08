@@ -148,15 +148,39 @@
 
 \subsection{Independent simulations}
 \begin{frame}{Threshold plot}
+  \frametitle<1-2>{Threshold Stability Plot}
+  \frametitle<3>{Threshold Stability Plot -- \alert{Averaged}}
+  \begin{figure}
+   \centering
+   % Figures from file Dropbox/1_Projects/3_Paper/Scriptfiles/SpatialGpdBootstrap.R
+   \only<1|handout:0>{\includegraphics[width=0.9\textwidth]{regional_threshold_selection_1.pdf}}%
+   \only<2|handout:0>{\includegraphics[width=0.9\textwidth]{regional_threshold_selection_2.pdf}}%
+   \only<3|handout:1>{\includegraphics[width=0.9\textwidth]{regional_threshold_selection_3.pdf}}%
+   \vspace{-2mm}
+   \caption{$\tau$ is the non-exceedance probability. The vertical line indicates the start of the GPD tail and the horizontal line shows the true shape parameter of the simulated data.}
+   %\uncover<3>{\caption{Averaged threshold stability plot (red) obtained from individual plots (grey) for simulated data. The dashed vertical line gives the true threshold and the horizontal line the predefined shape parameter.}}
+  \end{figure}
 \end{frame}
 
 \begin{frame}{Mean excess plot}
+ \begin{textblock*}{9cm}(1.5cm, 3cm)\centering
+  \includegraphics[width=9cm]{mean_excess.pdf}
+ \end{textblock*}
+ \begin{textblock*}{11cm}(0.75cm, 7.75cm)\centering
  note something on the shape estimate based on the slope
+ green: 0.15, blue: 0.02, red: 0.2 (Note here xi is constant is required...)
+ \end{textblock*}
 \end{frame}
 
 \subsection{GoF based diagnostics}
 \begin{frame}{Violin plots}
- criterion!
+ \begin{textblock*}{9cm}(1.5cm, 3cm)\centering
+  \includegraphics[width=9cm]{size_effect2.pdf}
+ \end{textblock*}
+ \begin{textblock*}{11cm}(0.75cm, 7.75cm)\centering
+  %Selected probability based on the 95\% critical value of the KS statistic, given by first value in [0.9, 0.99] that does not exceed the critical value.
+  Violin plots of the selected threshold based on the lowest value of $\tau$ for which the average KS statistic is not significant at the 5\% level.
+ \end{textblock*}
 \end{frame}
 
 \begin{frame}{Effect of Bulk--Tail Transition}
@@ -171,6 +195,34 @@
 
 \subsection{Dependent simulations}
 \begin{frame}{Spatial dependence model}
+\newcommand{\upperTailDep}{l^{\mathrm{u}}}
+ \begin{block}{Copula approach}
+  \begin{itemize}
+   \item Normal copula $\Rightarrow$ weak tail dependence
+   \item Gumbel copula $\Rightarrow$ strong tail dependence
+  \end{itemize}
+ \end{block}
+ \begin{block}{Quantile based measure of tail dependence}
+  \begin{equation*}
+   \upperTailDep(\tau) \coloneqq  P\left(X_1 > F_1^{-1}(\tau) | X_2 > F_2^{-1}(\tau) \right)
+  \end{equation*}
+ \end{block}
+ %$\upperTailDep(\tau)$ can be simply estimated from the data by counting the excesses over the sample $\tau$-quantile.
+
+ Copula parameter can be chosen such that $\upperTailDep(0.9)$ is the same.
+ %\begin{table}
+ % \centering
+ % \begin{tabular}{cccccc}
+ %  \toprule
+ %  $\upperTailDep(0.9)$ & 0.1 & 0.25 & 0.5   & 0.75 & 0.9   \\
+ %  \midrule
+ %  $\theta$ & 1 & 1.1514 & 1.5994  & 2.9254 & 6.8769    \\
+ %  $\rho$   & 0 & 0.3686 & 0.7366  & 0.9358 & 0.9898    \\
+ %  \bottomrule
+ % \end{tabular}
+ % \caption{Gumbel copula parameter $\theta$ and normal copula parameter $\rho$ used in the simulation of spatial dependent data.}
+ % \label{tab:UsedParameters}
+ %\end{table}
 \end{frame}
 
 \begin{frame}{Effect of Spatial Dependence}
@@ -273,68 +325,12 @@
 \end{frame}
 % NOTE: Hazard rate is the the ratio of the survival function (no death until t) divided by the density
 
-\begin{frame}
-  \frametitle<1-2>{Threshold Stability Plot}
-  \frametitle<3>{Threshold Stability Plot -- \alert{Averaged}}
-  \begin{figure}
-   \centering
-   % Figures from file Dropbox/1_Projects/3_Paper/Scriptfiles/SpatialGpdBootstrap.R
-   \only<1|handout:0>{\includegraphics[width=0.9\textwidth]{regional_threshold_selection_1.pdf}}%
-   \only<2|handout:0>{\includegraphics[width=0.9\textwidth]{regional_threshold_selection_2.pdf}}%
-   \only<3|handout:1>{\includegraphics[width=0.9\textwidth]{regional_threshold_selection_3.pdf}}%
-   \vspace{-2mm}
-   \caption{$\tau$ is the non-exceedance probability. The vertical line indicates the start of the GPD tail and the horizontal line shows the true shape parameter of the simulated data.}
-   %\uncover<3>{\caption{Averaged threshold stability plot (red) obtained from individual plots (grey) for simulated data. The dashed vertical line gives the true threshold and the horizontal line the predefined shape parameter.}}
-  \end{figure}
-\end{frame}
 
 
 
 %\begin{frame}{Several stations - TS plot}
 % \includegraphics[width=9cm]{mean_threshold_stability.pdf}
 %\end{frame}
-
-\begin{frame}{GOF Test and Automatic Selection}
- \begin{textblock*}{9cm}(1.5cm, 3cm)\centering
-  \includegraphics[width=9cm]{size_effect2.pdf}
- \end{textblock*}
- \begin{textblock*}{11cm}(0.75cm, 7.75cm)\centering
-  %Selected probability based on the 95\% critical value of the KS statistic, given by first value in [0.9, 0.99] that does not exceed the critical value.
-  Violin plots of the selected threshold based on the lowest value of $\tau$ for which the average KS statistic is not significant at the 5\% level.
- \end{textblock*}
-\end{frame}
-
-
-\newcommand{\upperTailDep}{l^{\mathrm{u}}}
-\begin{frame}{Simulation: Spatial Dependence}
- \begin{block}{Copula approach}
-  \begin{itemize}
-   \item Normal copula $\Rightarrow$ weak tail dependence
-   \item Gumbel copula $\Rightarrow$ strong tail dependence
-  \end{itemize}
- \end{block}
- \begin{block}{Quantile based measure of tail dependence}
-  \begin{equation*}
-   \upperTailDep(\tau) \coloneqq  P\left(X_1 > F_1^{-1}(\tau) | X_2 > F_2^{-1}(\tau) \right)
-  \end{equation*}
- \end{block}
- %$\upperTailDep(\tau)$ can be simply estimated from the data by counting the excesses over the sample $\tau$-quantile.
-
- Copula parameter can be chosen such that $\upperTailDep(0.9)$ is the same.
- %\begin{table}
- % \centering
- % \begin{tabular}{cccccc}
- %  \toprule
- %  $\upperTailDep(0.9)$ & 0.1 & 0.25 & 0.5   & 0.75 & 0.9   \\
- %  \midrule
- %  $\theta$ & 1 & 1.1514 & 1.5994  & 2.9254 & 6.8769    \\
- %  $\rho$   & 0 & 0.3686 & 0.7366  & 0.9358 & 0.9898    \\
- %  \bottomrule
- % \end{tabular}
- % \caption{Gumbel copula parameter $\theta$ and normal copula parameter $\rho$ used in the simulation of spatial dependent data.}
- % \label{tab:UsedParameters}
- %\end{table}
-\end{frame}
 
 
 %\begin{frame}{Spatial dependence}

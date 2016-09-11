@@ -83,31 +83,49 @@
  \titlepage
 \end{frame}
 
-\begin{frame}{KNMI}
- \begin{block}{General info}
- \end{block}
- \begin{block}{EVT related problems}
+\usebackgroundtemplate{%
+\tikz[overlay, remember picture] \node[opacity=1, at=(current page.center)] {
+   \includegraphics[height=\paperheight,width=\paperwidth]{AboutKNMI.png}};
+}
+\begin{frame}
+\thispagestyle{empty}
+\end{frame}
+\usebackgroundtemplate{ }
+
+\begin{frame}{EVT related problems}
+ \begin{textblock*}{5cm}(0.75cm, 3.5cm)\centering
   \begin{itemize}
-   \item point-wise extreme rainfall, temperature, wind gusts
-   \item combined extremes (Friesland example)
-   \item EVT for climate models (spatial extent)
-   \item EVT conditional on predictions (Jasper \& Juan)
-   \item EVT for earthquakes
+   \item Combined extremes \\[3mm]%(Friesland example)
+   \item Climate model validation \\[3mm]%(High resolution models / spatial extent)
+   \item Improvement of extreme weather predictions \\[3mm]%(Jasper \& Juan)
+   \item Earthquake analysis
   \end{itemize}
- \end{block}
+ \end{textblock*}
+ \only<1>{\begin{textblock*}{9cm}(5.5cm, 3cm)\centering
+  \includegraphics[width=5.5cm]{CombinedExtremes.png}
+ \end{textblock*}}
+ \only<2>{\begin{textblock*}{9cm}(5.5cm, 3cm)\centering
+  \includegraphics[width=5.5cm]{HarmonieFuture.jpg}
+ \end{textblock*}}
+ \only<3>{\begin{textblock*}{9cm}(5.5cm, 3.75cm)\centering
+  \includegraphics[width=5.5cm]{PhDStudent.png}
+ \end{textblock*}}
+ \only<4>{\begin{textblock*}{9cm}(5.5cm, 3cm)\centering
+  \includegraphics[width=5.5cm]{GroningenHazardMap.png}
+ \end{textblock*}}
 \end{frame}
 
-\begin{frame}{Myself}
- \begin{itemize}
-  \item This is work on point-wise extreme precipitation
-  \item In my master thesis I focused on more high dimensional extremes, i.e. ...
-  \item before the analysis started I had to rescale (conceptually) the margins to unit Frechet
-  \item now I am stuck with the rescaling (and a long time has passed since my master thesis - so I am excited to refresh and expand my knowledge at this workshop)
-  \item but it is not only point-wise because we want to borrow strength from neighbors ...
- \end{itemize}
-\end{frame}
+%\begin{frame}{Myself}
+% Only mention point at the next slide
+% \begin{itemize}
+%  \item In my master thesis I focused on more high dimensional extremes, i.e. ...
+%  \item before the analysis started I had to rescale (conceptually) the margins to unit Frechet
+%  \item now I am stuck with the rescaling (and a long time has passed since my master thesis - so I am excited to refresh and expand my knowledge at this workshop)
+%  \item but not only point-wise because we want to borrow strength from neighbors ...
+% \end{itemize}
+%\end{frame}
 
-\begin{frame}{Area of Interest}
+\begin{frame}[label=StudySetting]{Study Setting}
  \begin{textblock*}{5cm}(1cm,2.4cm)
   \includegraphics[width=5cm, height=5cm]{overview.pdf}
  \end{textblock*}
@@ -121,30 +139,93 @@
  \end{textblock*}
 \end{frame}
 
-\begin{frame}{Introduction to RFA}
+\begin{frame}{RFA}
+ \begin{textblock*}{11cm}(0.75cm,3cm)
+ \begin{block}{Regional frequency analysis (RFA)}
+  \begin{itemize}
+   \item Estimate the frequency of rare events at one site by using data from several sites
+   \item For instance by assuming that the marginal distributions are identical apart from a scaling factor
+  \end{itemize}
+ \end{block}
+ \end{textblock*}
+
+ \begin{textblock*}{11cm}(0.75cm, 6cm)
+  \only<2>{$$ r_s(T) = \begin{cases}
+    u_s\left(1 - \frac{\alert{\sigma_s / u_s}}{\xi}\left[1 - (\alert{\lambda_s} T)\right]^\xi\right), \qquad &\xi \neq 0, \\
+    u_s\left(1 + \alert{\sigma_s / u_s} \log\left(\alert{\lambda_s} T\right)\right), \qquad &\xi = 0.
+    \end{cases}$$}
+  \only<3>{$$ r_s(T) = \begin{cases}
+    u_s\left(1 - \frac{\alert{\gamma}}{\xi}\left[1 - (\alert{\lambda} T)\right]^\xi\right), \qquad &\xi \neq 0, \\
+    u_s\left(1 + \alert{\gamma} \log\left(\alert{\lambda} T\right)\right), \qquad &\xi = 0.
+    \end{cases}$$}
+ \end{textblock*}
 \end{frame}
 
-\begin{frame}{RFA and threshold selection}
- short recap of threshold selection procedures and Figure 4.1
+\begin{frame}{Threshold selection}
+ \only<1,3>{\begin{block}{Trade-off situation}
+  \begin{itemize}
+   \item Low thresholds lead to bias in the analysis of the excesses
+   \item High thresholds result in high parameter estimation uncertainty
+  \end{itemize}
+ \end{block}}
+ \only<2>{
+  \begin{textblock*}{9cm}(1.5cm, 3cm)\centering
+   \includegraphics[width=9cm]{KS_statistic_Putten2.pdf}
+  \end{textblock*}
+  \begin{textblock*}{11cm}(0.75cm, 7.75cm)\centering
+  %Selected probability based on the 95\% critical value of the KS statistic, given by first value in [0.9, 0.99] that does not exceed the critical value.
+  KS statistic for the precipitation data in Putten as function of the non-excess probability $\tau$, together with the 95\% critical values.
+ \end{textblock*}
+  }
+ \uncover<3>{\begin{block}{Regional scale}
+  \begin{itemize}
+   \item Most studies use the same quantile threshold %required in the previous setting
+   \item Influence of threshold level is not often studied
+  \end{itemize}
+ \end{block}}
 \end{frame}
 
-\section{Idea}
-
-\begin{frame}{Extend visual diagnostics}
-\end{frame}
-
-\begin{frame}{Extend GOF diagnostics}
-\end{frame}
 
 \section{Simulation}
 
-\subsection{Marginal model}
-\begin{frame}{Marginal model}
- Short recap on marginal models - often not even continuous
+\subsection{Marginal distribution}
+% \begin{frame}
+%  \begin{textblock*}{9cm}(1.5cm, 1.5cm)\centering
+%   \includegraphics[height=7cm]{DensitiesScarrott.png}
+%  \end{textblock*}
+%  \begin{textblock*}{11cm}(0.75cm, 8.75cm)\centering
+%  {\tiny Scarrott and MacDonald (2012): A review of extreme value threshold estimation and uncertainty quantification. \emph{REVSTAT}}
+%  \end{textblock*}
+% \end{frame}
+
+\begin{frame}{Smooth splicing }
+ Any continuous distribution $F$ on $[0,\infty)$ can be written as
+ \begin{equation*}
+  F(x) = %1 - \exp(-H(x)) =
+         1 - \exp \Bigl( - \int_0^x h(u)\,du \Bigr),
+ \end{equation*}
+ where $h$ is the hazard rate of the distribution. %If $h$ is differentiable then also the density $f$.
+ Define %A smooth density for a specific bulk (e.g. Weibull) distribution and a GPD tail above the threshold $u$ can be obtained by defining
+ \begin{equation*}
+  h(x) \coloneqq \eta\left(\frac{x-u}{\varepsilon}\right) h_1(x) +
+       \left(1 - \eta\left(\frac{x-u}{\varepsilon}\right)\right) h_2(x),
+ \end{equation*}
+ with $h_1$ the hazard rate of some bulk distribution, $h_2$ the hazard rate of the GPD, and $\eta$ some smooth transition function.
 \end{frame}
 
-\begin{frame}{Our marginal model}
+\begin{frame}{Weibull-GPD model}
+ \begin{textblock*}{4.5cm}(1.5cm, 3cm)\centering
+  \includegraphics[width=4cm]{distribution_function.pdf}
+ \end{textblock*}
+ \begin{textblock*}{4.5cm}(5.75cm, 3cm)\centering
+  \includegraphics[width=4cm]{density.pdf}
+ \end{textblock*}
+ \begin{textblock*}{11cm}(0.75cm, 7.75cm)\centering
+ Cdf and density of different hybrid Weibull-GPD distributions.
+ %note alternative by specifying $h_1(u) = h_2(u)$
+ \end{textblock*}
 \end{frame}
+% NOTE: Hazard rate is the the ratio of the survival function (no death until t) divided by the density
 
 \subsection{Independent simulations}
 \begin{frame}{Threshold plot}
@@ -167,13 +248,13 @@
   \includegraphics[width=9cm]{mean_excess.pdf}
  \end{textblock*}
  \begin{textblock*}{11cm}(0.75cm, 7.75cm)\centering
- note something on the shape estimate based on the slope
- green: 0.15, blue: 0.02, red: 0.2 (Note here xi is constant is required...)
+ Mean excess plot for 1 (blue), 8 (green), and 16 (red) sites.\\
+ %green: 0.15, blue: 0.02, red: 0.2
  \end{textblock*}
 \end{frame}
 
 \subsection{GoF based diagnostics}
-\begin{frame}{Violin plots}
+\begin{frame}{Averaged KS statistic}
  \begin{textblock*}{9cm}(1.5cm, 3cm)\centering
   \includegraphics[width=9cm]{size_effect2.pdf}
  \end{textblock*}
@@ -189,7 +270,7 @@
   \only<2>{\includegraphics[width=9cm]{AEE_50year.pdf}}
  \end{textblock*}
  \begin{textblock*}{11cm}(0.75cm, 7.75cm)\centering
-  AEE in the 5-year return level as a function of the probability $\tau$ for the simulated data (blue - bulk and tail are different, red - similar). The dashed horizontal lines indicate the AEE of the selected threshold.
+  AEE in the \only<1>{5}\only<2>{50}-year return level as a function of the probability $\tau$ for the simulated data (blue - bulk and tail are different, red - similar). The dashed horizontal lines indicate the AEE of the selected threshold.
  \end{textblock*}
 \end{frame}
 
@@ -235,15 +316,16 @@
 \end{frame}
 
 \section{Data results}
+\againframe{StudySetting}
 
 \begin{frame}{Spatially averaged TS plot}
 \begin{textblock*}{9cm}(1.5cm,3cm)
   \includegraphics[width=9cm]{threshold_stability_rain_data.pdf}
  \end{textblock*}
  \begin{textblock*}{11cm}(0.75cm, 7.5cm)\centering
-  Threshold stability plot
-  Say something on the linear increase and the stable region afterwards
-  In particular we can reject too low thresholds
+  Threshold stability plot for the rainfall data.
+  %Say something on the linear increase and the stable region afterwards
+  %In particular we can reject too low thresholds
  \end{textblock*}
 \end{frame}
 
@@ -253,77 +335,86 @@
  \end{textblock*}
  \begin{textblock*}{11cm}(0.75cm, 7.5cm)\centering
   Dependence in the 0.9 quantile of the rainfall data versus distance.
-  Say something that the decay with distance indicates tail independent data.
+  %Say something that the decay with distance indicates tail independent data.
  \end{textblock*}
 \end{frame}
 
-\begin{frame}{Averaged KS statistic}
+\begin{frame}{Spatially averaged KS statistic}
  \begin{textblock*}{9cm}(1.5cm,3cm)
   \includegraphics[width=9cm]{common_KS_statistic_rain_data.pdf}
  \end{textblock*}
  \begin{textblock*}{11cm}(0.75cm, 7.5cm)\centering
-  Spatially averaged KS statistic for the three different dependence models
+  Spatially averaged KS statistic for the three different dependence models.
  \end{textblock*}
 \end{frame}
 
-\begin{frame}{Summary}
+\begin{frame}{Effect on Return Levels}
+ \begin{textblock*}{9cm}(1.5cm, 2.7cm)\centering
+  \includegraphics[width=8.5cm]{retLevels.pdf}
+  \begin{picture}(0,0)
+   \put(-235,+70){\rotatebox{+90}{\scriptsize mm}}
+   \put(-110,+0){\scriptsize $\tau$}
+  \end{picture}
+ \end{textblock*}
+ \begin{textblock*}{11cm}(0.75cm, 7.75cm)\centering
+  Average return level as a function of the non-exceedance probability of the selected threshold for return periods of 5 (red), 50 (green) and 500 (blue) years.
+ \end{textblock*}
 \end{frame}
 
-\begin{frame}{References}
-\end{frame}
-
-\begin{frame}{Your ideas? Comments?}
-\end{frame}
-
-\begin{frame}{Why Threshold Selection?}
- \begin{block}{Two main approaches for extreme value analysis}
+\begin{frame}{Conclusion / Summary}
+ \begin{block}{Use RFA principles also for threshold selection!}
+  GoF based approach not restricted to the GPD.
+ \end{block}
+ \begin{block}{Outlook}
   \begin{itemize}
-   \item Block maxima -- one value per year \\
-    $\Rightarrow$ Generalized extreme value distribution
-   \item Peaks-over-threshold -- all peak values above a threshold \\
-    $\Rightarrow$ Generalized Pareto distribution (GPD)
+   \item Inspect the role of selection criterion
+   \item Extend the approach to incorporate trends
   \end{itemize}
  \end{block}
- \begin{block}{Trade-off situation}
-  \begin{itemize}
-   \item Low thresholds lead to bias in the analysis of the excesses
-   \item High thresholds result in high parameter estimation uncertainty
-  \end{itemize}
- \end{block}
+ \begin{thebibliography}{8}
+  \beamertemplatearticlebibitems
+  \bibitem{Roth.etal2016}
+   Roth, M., G. Jongbloed, and T.~A. Buishand (2016),
+   \newblock Threshold selection for regional peaks-over-threshold data.
+   \newblock {\em Journal of Applied Statistics}, 43:1291--1309.
+ \end{thebibliography}
 \end{frame}
 
-\begin{frame}{Preliminaries}
- \begin{block}{At-site methods for threshold selection}
-  \begin{itemize}
-   \item Visual inspection: mean excess plot, threshold stability plot
-   \item Goodness of Fit tests: Anderson--Darling or Kolmogorov--Smirnov statistic
-   \item Many more ... \footnote{\tiny Scarrott and MacDonald (2012): A review of extreme value threshold estimation and uncertainty quantification. \emph{REVSTAT}}
-  \end{itemize}
- \end{block}
- \begin{block}{Regional frequency analysis}
-  \begin{itemize}
-   \item Reduces parameter estimation uncertainty
-   \item Often regional constant exceedance probability (e.g. 5\%)
-   \item \alert{But inference on threshold level only on at-site basis}
-  \end{itemize}
- \end{block}
-\end{frame}
+%\begin{frame}{Why Threshold Selection?}
+% \begin{block}{Two main approaches for extreme value analysis}
+%  \begin{itemize}
+%   \item Block maxima -- one value per year \\
+%    $\Rightarrow$ Generalized extreme value distribution
+%   \item Peaks-over-threshold -- all peak values above a threshold \\
+%    $\Rightarrow$ Generalized Pareto distribution (GPD)
+%  \end{itemize}
+% \end{block}
+% \begin{block}{Trade-off situation}
+%  \begin{itemize}
+%   \item Low thresholds lead to bias in the analysis of the excesses
+%   \item High thresholds result in high parameter estimation uncertainty
+%  \end{itemize}
+% \end{block}
+%\end{frame}
 
-\begin{frame}{Simulation: Smooth Marginal Distribution}
- Any continuous distribution $F$ on $[0,\infty)$ can be written as
- \begin{equation*}
-  F(x) = %1 - \exp(-H(x)) =
-         1 - \exp \Bigl( - \int_0^x h(u)\,du \Bigr),
- \end{equation*}
- where $h$ is the hazard rate of the distribution. %If $h$ is differentiable then also the density $f$.
- Define %A smooth density for a specific bulk (e.g. Weibull) distribution and a GPD tail above the threshold $u$ can be obtained by defining
- \begin{equation*}
-  h(x) \coloneqq \eta\left(\frac{x-u}{\varepsilon}\right) h_1(x) +
-       \left(1 - \eta\left(\frac{x-u}{\varepsilon}\right)\right) h_2(x),
- \end{equation*}
- with $h_1$ the hazard rate of some bulk distribution, $h_2$ the hazard rate of the GPD, and $\eta$ some smooth transition function.
-\end{frame}
-% NOTE: Hazard rate is the the ratio of the survival function (no death until t) divided by the density
+%\begin{frame}{Preliminaries}
+% \begin{block}{At-site methods for threshold selection}
+%  \begin{itemize}
+%   \item Visual inspection: mean excess plot, threshold stability plot
+%   \item Goodness of Fit tests: Anderson--Darling or Kolmogorov--Smirnov statistic
+%   \item Many more ... \footnote{\tiny Scarrott and MacDonald (2012): A review of extreme value threshold estimation and uncertainty quantification. \emph{REVSTAT}}
+%  \end{itemize}
+% \end{block}
+% \begin{block}{Regional frequency analysis}
+%  \begin{itemize}
+%   \item Reduces parameter estimation uncertainty
+%   \item Often regional constant exceedance probability (e.g. 5\%)
+%   \item \alert{But inference on threshold level only on at-site basis}
+%  \end{itemize}
+% \end{block}
+%\end{frame}
+
+
 
 
 
@@ -343,61 +434,27 @@
 %\end{frame}
 
 
-\begin{frame}[label=AtSiteKS]{At-site KS Statistic}
- \begin{textblock*}{9cm}(1.5cm, 2.75cm)\centering
-  \includegraphics[width=9cm]{KS_statistic_Putten2.pdf}
- \end{textblock*}
- \begin{textblock*}{11cm}(0.75cm, 7.5cm)\centering
-  The blue line gives the KS statistic and the red the 95\% critical values.
- \end{textblock*}
-\end{frame}
+%\begin{frame}[label=AtSiteKS]{At-site KS Statistic}
+% \begin{textblock*}{9cm}(1.5cm, 2.75cm)\centering
+%  \includegraphics[width=9cm]{KS_statistic_Putten2.pdf}
+% \end{textblock*}
+% \begin{textblock*}{11cm}(0.75cm, 7.5cm)\centering
+%  The blue line gives the KS statistic and the red the 95\% critical values.
+% \end{textblock*}
+%\end{frame}
+%
+%\begin{frame}{Regional KS Statistic}
+% \begin{textblock*}{9cm}(1.5cm, 2.75cm)\centering
+%  \includegraphics[width=9cm]{common_KS_statistic_rain_data.pdf}
+% \end{textblock*}
+% \begin{textblock*}{11cm}(0.75cm, 7.5cm)\centering
+%  The red line gives the regionally averaged KS statistic, the three other lines give the 95\% critical values
+%  based on the Normal (blue), distance-dependent Normal (purple), and Gumbel copula (green).
+% \end{textblock*}
+%\end{frame}
 
-\begin{frame}{Regional KS Statistic}
- \begin{textblock*}{9cm}(1.5cm, 2.75cm)\centering
-  \includegraphics[width=9cm]{common_KS_statistic_rain_data.pdf}
- \end{textblock*}
- \begin{textblock*}{11cm}(0.75cm, 7.5cm)\centering
-  The red line gives the regionally averaged KS statistic, the three other lines give the 95\% critical values
-  based on the Normal (blue), distance-dependent Normal (purple), and Gumbel copula (green).
- \end{textblock*}
-\end{frame}
-
-\begin{frame}{Effect on Return Levels}
- \begin{textblock*}{9cm}(1.5cm, 2.7cm)\centering
-  \includegraphics[width=8.5cm]{retLevels.pdf}
-  \begin{picture}(0,0)
-   \put(-235,+70){\rotatebox{+90}{\scriptsize mm}}
-   \put(-110,+0){\scriptsize $\tau$}
-  \end{picture}
- \end{textblock*}
- \begin{textblock*}{11cm}(0.75cm, 7.75cm)\centering
-  Average return level as a function of the non-exceedance probability of the selected threshold for return periods of 5 (red), 50 (green) and 500 (blue) years.
- \end{textblock*}
-\end{frame}
-
-\begin{frame}{Conclusion}
- \begin{block}{Use RFA principles also for threshold selection!}
-  GoF based approach not restricted to the GPD.
- \end{block}
- \begin{block}{Outlook}
-  \begin{itemize}
-   \item Inspect the role of selection criterion
-   \item Extend the approach to incorporate trends
-  \end{itemize}
- \end{block}
- \begin{thebibliography}{8}
-  \beamertemplatearticlebibitems
-  \bibitem{Roth.etal2016}
-   Roth, M., G. Jongbloed, and T.~A. Buishand (2016),
-   \newblock Threshold selection for regional peaks-over-threshold data.
-   \newblock {\em Journal of Applied Statistics}, 43:1291--1309.
- \end{thebibliography}
-\end{frame}
 
 \appendix
-
-\begin{frame}
-\end{frame}
 
 \begin{frame}{Kolmogrov-Smirnov statistic}
  \begin{enumerate}
